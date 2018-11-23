@@ -9,7 +9,7 @@ scriptedLaunchOpts ++= java.lang.management.ManagementFactory.getRuntimeMXBean.g
   a => Seq("-Xmx", "-Xms", "-XX", "-Dfile").exists(a.startsWith)
 )
 
-crossSbtVersions := List("1.0.0")
+crossSbtVersions := List("1.1.0")
 organization     := "com.lightbend.paradox"
 name             := "sbt-paradox-project-info"
 
