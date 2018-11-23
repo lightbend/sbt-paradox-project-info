@@ -41,8 +41,15 @@ object ProjectInfoDirective {
     p.printchkln()
     p.print("""<table class="project-info">""").println()
     p.indent(2)
+    p.print("<tr><th colspan=2>Project Info</th></tr>").println()
     p.print("<tr><th>Artifact name</th><td>").print(sbtValues.artifact).print("</td></tr>").println()
     p.print("<tr><th>Version</th><td>").print(sbtValues.version).print("</th></tr>").println()
+    if (jdkVersions.nonEmpty) {
+      p.print("<tr><th>JDK versions</th><td>").print(jdkVersions.mkString(", ")).print("</td></tr>").println()
+    }
+    if (scalaVersions.nonEmpty) {
+      p.print("<tr><th>Scala versions</th><td>").print(scalaVersions.mkString(", ")).print("</td></tr>").println()
+    }
     jpmsName.foreach(n => p.print("<tr><th>JPMS module name</th><td>").print(n).print("</td></tr>").println())
     p.print("<tr><th>Readiness level</th><td>")
     val currentLevel = levels.head
@@ -59,7 +66,24 @@ object ProjectInfoDirective {
     currentLevel.note.foreach { text =>
       p.print("<div>Note: ").printEncoded(text).print("</div>").println()
     }
-    p.print("</td></tr>")
+    p.print("</td></tr>").println()
+    releaseNotes.foreach {
+      case Link(url, text) =>
+        p.print("<tr><th>Release notes</th><td><a href=\"")
+          .print(url)
+          .print("\">")
+          .print(text.getOrElse("Release notes"))
+          .print("</a></td></tr>")
+          .println()
+    }
+    issues.foreach {
+      case Link(url, text) =>
+        p.print("<tr><th>Issues</th><td><a href=\"")
+          .print(url)
+          .print("\">")
+          .print(text.getOrElse("Issue tracker"))
+          .print("</a></td></tr>")
+    }
     p.indent(-2).println()
     p.print("</table>").println()
   }

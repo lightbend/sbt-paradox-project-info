@@ -64,7 +64,8 @@ class ProjectInfoSpec extends WordSpec with Matchers {
           scalaVersions = List("2.12", "2.13"),
           jdkVersions   = List("OpenJDK 8"),
           Some("alpakka.core"),
-          issuesUrl = None,
+          issues       = None,
+          releaseNotes = None,
           levels = List(
             Level(ReadinessLevel.Incubating,
                   LocalDate.of(2018, 11, 22),
@@ -105,7 +106,8 @@ class ProjectInfoSpec extends WordSpec with Matchers {
           scalaVersions = List("2.12", "2.13"),
           jdkVersions   = List("OpenJDK 8"),
           Some("alpakka.core"),
-          issuesUrl = None,
+          issues       = None,
+          releaseNotes = None,
           levels = List(
             Level(ReadinessLevel.Incubating,
                   LocalDate.of(2018, 11, 22),
@@ -125,7 +127,9 @@ class ProjectInfoSpec extends WordSpec with Matchers {
            |    scala-versions: ["2.12", "2.13"]
            |    jdk-versions: ["OpenJDK 8"]
            |    jpms-name: "alpakka.core"
-           |    issues-url: $${project-info.issues-url}"p:core"
+           |    issues: {
+           |      url: $${project-info.issues-url}"p:core"
+           |    }
            |    levels: [
            |      {
            |        readiness: Supported
@@ -151,7 +155,8 @@ class ProjectInfoSpec extends WordSpec with Matchers {
           scalaVersions = List("2.12", "2.13"),
           jdkVersions   = List("OpenJDK 8"),
           Some("alpakka.core"),
-          issuesUrl = Some("https://github.com/akka/alpakka/labels/p:core"),
+          issues       = Some(Link("https://github.com/akka/alpakka/labels/p:core", None)),
+          releaseNotes = None,
           levels = List(
             Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None),
             Level(ReadinessLevel.Incubating,

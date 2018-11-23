@@ -50,6 +50,17 @@ object ReadinessLevel {
   }
 }
 
+case class Link(url: String, text: Option[String])
+
+object Link {
+  def apply(c: Config): Link = {
+    import Util.ExtendedConfig
+    val url  = c.getString("url")
+    val text = c.getOption("text", _.getString(_))
+    Link(url, text)
+  }
+}
+
 case class Level(level: ReadinessLevel,
                  since: LocalDate,
                  sinceVersion: String,
@@ -73,7 +84,8 @@ case class ProjectInfo(name: String,
                        scalaVersions: immutable.Seq[String],
                        jdkVersions: immutable.Seq[String],
                        jpmsName: Option[String],
-                       issuesUrl: Option[String],
+                       issues: Option[Link],
+                       releaseNotes: Option[Link],
                        levels: immutable.Seq[Level])
 
 object ProjectInfo {
@@ -83,12 +95,13 @@ object ProjectInfo {
     val scalaVersions = c.getStringList("scala-versions").asScala.toList
     val jdkVersions   = c.getStringList("jdk-versions").asScala.toList
     val jpmsName      = c.getOption("jpms-name", _.getString(_))
-    val issuesUrl     = c.getOption("issues-url", _.getString(_))
+    val issues        = c.getOption("issues", (c, s) => Link(c.getConfig(s)))
+    val releaseNotes  = c.getOption("release-notes", (c, s) => Link(c.getConfig(s)))
     val levels =
       for { item <- c.getObjectList("levels").asScala.toList } yield {
         Level(item.toConfig)
       }
-    new ProjectInfo(name, scalaVersions, jdkVersions, jpmsName, issuesUrl, levels)
+    new ProjectInfo(name, scalaVersions, jdkVersions, jpmsName, issues, releaseNotes, levels)
   }
 }
 
