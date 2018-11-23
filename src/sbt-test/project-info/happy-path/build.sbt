@@ -1,0 +1,2 @@
+enablePlugins(ParadoxPlugin)
+paradoxTheme := None
