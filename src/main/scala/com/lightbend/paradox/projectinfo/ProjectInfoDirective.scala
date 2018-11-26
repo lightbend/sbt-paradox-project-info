@@ -26,7 +26,7 @@ import org.pegdown.ast.{DirectiveNode, Visitor}
 class ProjectInfoDirective(config: Config, moduleToSbtValues: String => SbtValues)
     extends LeafBlockDirective("project-info") {
   def render(node: DirectiveNode, visitor: Visitor, printer: Printer): Unit = {
-    val moduleName = node.attributes.value("sub-project")
+    val moduleName = node.attributes.value("project")
     val module     = config.getConfig(moduleName)
     val data       = ProjectInfo(moduleName, module)
     val sbtValues  = moduleToSbtValues(moduleName)
@@ -41,7 +41,7 @@ object ProjectInfoDirective {
     p.printchkln()
     p.print("""<table class="project-info">""").println()
     p.indent(2)
-    p.print("<tr><th colspan=2>Project Info</th></tr>").println()
+    p.print("<tr><th colspan=2>Project Info: ").print(title).print("</th></tr>").println()
     p.print("<tr><th>Artifact name</th><td>").print(sbtValues.artifact).print("</td></tr>").println()
     p.print("<tr><th>Version</th><td>").print(sbtValues.version).print("</th></tr>").println()
     if (jdkVersions.nonEmpty) {

@@ -61,6 +61,7 @@ class ProjectInfoSpec extends WordSpec with Matchers {
       ProjectInfo("core", c) should be(
         ProjectInfo(
           "core",
+          "core",
           scalaVersions = List("2.12", "2.13"),
           jdkVersions   = List("OpenJDK 8"),
           Some("alpakka.core"),
@@ -82,7 +83,7 @@ class ProjectInfoSpec extends WordSpec with Matchers {
         """
           |project-info {
           |  core: {
-          |    version: "1.0.1"
+          |    title: "The core project"
           |    scala-versions: ["2.12", "2.13"]
           |    jdk-versions: ["OpenJDK 8"]
           |    jpms-name: "alpakka.core"
@@ -103,6 +104,7 @@ class ProjectInfoSpec extends WordSpec with Matchers {
       ProjectInfo(name, conf) should be(
         ProjectInfo(
           "core",
+          title         = "The core project",
           scalaVersions = List("2.12", "2.13"),
           jdkVersions   = List("OpenJDK 8"),
           Some("alpakka.core"),
@@ -123,7 +125,7 @@ class ProjectInfoSpec extends WordSpec with Matchers {
            |project-info {
            |  issues-url: "https://github.com/akka/alpakka/labels/"
            |  core: {
-           |    version: "1.0.1"
+           |    title: "The core project"
            |    scala-versions: ["2.12", "2.13"]
            |    jdk-versions: ["OpenJDK 8"]
            |    jpms-name: "alpakka.core"
@@ -152,6 +154,7 @@ class ProjectInfoSpec extends WordSpec with Matchers {
       ProjectInfo(name, conf) should be(
         ProjectInfo(
           "core",
+          title         = "The core project",
           scalaVersions = List("2.12", "2.13"),
           jdkVersions   = List("OpenJDK 8"),
           Some("alpakka.core"),

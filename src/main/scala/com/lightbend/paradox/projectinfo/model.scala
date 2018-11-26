@@ -29,16 +29,16 @@ case class SbtValues(artifact: String, version: String)
 trait ReadinessLevel { def name: String }
 object ReadinessLevel {
   case object Supported extends ReadinessLevel {
-    val name = "Supported by Lightbend"
+    val name = "<a href=\"https://www.lightbend.com/subscription\">Lightbend</a> provides Developer Support"
   }
   case object Certified extends ReadinessLevel {
-    val name = "Certified by Lightbend"
+    val name = "Certified by <a href=\"https://www.lightbend.com/\">Lightbend</a>"
   }
   case object Incubating extends ReadinessLevel {
     val name = "Incubating"
   }
   case object EndOfLife extends ReadinessLevel {
-    val name = "End-of-Life"
+    val name = "End-of-Life, it is not recommended to use this project any more."
   }
 
   def fromString(s: String): ReadinessLevel = s match {
@@ -81,6 +81,7 @@ object Level {
 }
 
 case class ProjectInfo(name: String,
+                       title: String,
                        scalaVersions: immutable.Seq[String],
                        jdkVersions: immutable.Seq[String],
                        jpmsName: Option[String],
@@ -92,6 +93,7 @@ object ProjectInfo {
   import Util.ExtendedConfig
 
   def apply(name: String, c: Config): ProjectInfo = {
+    val title         = c.getOption("title", _.getString(_)).getOrElse(name)
     val scalaVersions = c.getStringList("scala-versions").asScala.toList
     val jdkVersions   = c.getStringList("jdk-versions").asScala.toList
     val jpmsName      = c.getOption("jpms-name", _.getString(_))
@@ -101,7 +103,7 @@ object ProjectInfo {
       for { item <- c.getObjectList("levels").asScala.toList } yield {
         Level(item.toConfig)
       }
-    new ProjectInfo(name, scalaVersions, jdkVersions, jpmsName, issues, releaseNotes, levels)
+    new ProjectInfo(name, title, scalaVersions, jdkVersions, jpmsName, issues, releaseNotes, levels)
   }
 }
 
