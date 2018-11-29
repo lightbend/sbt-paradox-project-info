@@ -35,6 +35,13 @@ class ProjectInfoDirective(config: Config, moduleToSbtValues: String => SbtValue
 }
 
 object ProjectInfoDirective {
+  def printLink(p: Printer, url: String, text: String): Unit =
+    p.print("<a href=\"")
+      .print(url)
+      .print("\" target=\"_blank\" rel=\"noopener noreferrer\">")
+      .print(text)
+      .print("</a>")
+
   val formatter = DateTimeFormatter.ISO_LOCAL_DATE
   def renderInfo(p: Printer, data: ProjectInfo, sbtValues: SbtValues): Unit = {
     import data._
@@ -42,15 +49,48 @@ object ProjectInfoDirective {
     p.print("""<table class="project-info">""").println()
     p.indent(2)
     p.print("<tr><th colspan=2>Project Info: ").print(title).print("</th></tr>").println()
-    p.print("<tr><th>Artifact name</th><td>").print(sbtValues.artifact).print("</td></tr>").println()
-    p.print("<tr><th>Version</th><td>").print(sbtValues.version).print("</th></tr>").println()
+    p.print("<tr><th>Artifact</th><td><div>")
+      .print(sbtValues.organization)
+      .print("</div>")
+      .println()
+      .print("<div>")
+      .print(sbtValues.artifact)
+      .print("</div>")
+      .println()
+      .print("<div>")
+      .print(sbtValues.version)
+      .print("</div></td></tr>")
+      .println()
     if (jdkVersions.nonEmpty) {
-      p.print("<tr><th>JDK versions</th><td>").print(jdkVersions.mkString(", ")).print("</td></tr>").println()
+      p.print("<tr><th>JDK versions</th><td>")
+        .print(jdkVersions.mkString("<div>", "</div><div>", "</div>"))
+        .print("</td></tr>")
+        .println()
     }
+    // scala-versions from project-info.conf overwrites sbt's crossScalaVersions
     if (scalaVersions.nonEmpty) {
-      p.print("<tr><th>Scala versions</th><td>").print(scalaVersions.mkString(", ")).print("</td></tr>").println()
+      p.print("<tr><th>Scala versions</th><td>")
+        .print(scalaVersions.mkString(", "))
+        .print("</td></tr>")
+        .println()
+    } else if (sbtValues.crossScalaVersions.nonEmpty) {
+      p.print("<tr><th>Scala versions</th><td>")
+        .print(sbtValues.crossScalaVersions.mkString(", "))
+        .print("</td></tr>")
+        .println()
     }
     jpmsName.foreach(n => p.print("<tr><th>JPMS module name</th><td>").print(n).print("</td></tr>").println())
+    if (sbtValues.licenses.nonEmpty) {
+      p.print("<tr><th>License</th><td>")
+      for {
+        lic <- sbtValues.licenses
+      } {
+        p.print("<div>")
+        printLink(p, lic._2.toString, lic._1)
+        p.print("</div>").println()
+      }
+      p.print("</td></tr>").println()
+    }
     p.print("<tr><th>Readiness level</th><td>")
     val currentLevel = levels.head
     p.print("<div class='readiness-level'>").print(currentLevel.level.name).print("</div>").println()
@@ -67,22 +107,31 @@ object ProjectInfoDirective {
       p.print("<div>Note: ").printEncoded(text).print("</div>").println()
     }
     p.print("</td></tr>").println()
+    sbtValues.homepage.foreach { page =>
+      p.print("<tr><th>Home page</th><td>")
+      printLink(p, page.toExternalForm, page.toExternalForm)
+      p.print("</td></tr>")
+        .println()
+    }
     releaseNotes.foreach {
       case Link(url, text) =>
-        p.print("<tr><th>Release notes</th><td><a href=\"")
-          .print(url)
-          .print("\">")
-          .print(text.getOrElse("Release notes"))
-          .print("</a></td></tr>")
+        p.print("<tr><th>Release notes</th><td>")
+        printLink(p, url, text.getOrElse("Release notes"))
+        p.print("</td></tr>")
           .println()
     }
     issues.foreach {
       case Link(url, text) =>
-        p.print("<tr><th>Issues</th><td><a href=\"")
-          .print(url)
-          .print("\">")
-          .print(text.getOrElse("Issue tracker"))
-          .print("</a></td></tr>")
+        p.print("<tr><th>Issues</th><td>")
+        printLink(p, url, text.getOrElse("Issue tracker"))
+        p.print("</td></tr>")
+          .println()
+    }
+    sbtValues.scmInfo.foreach { scmInfo =>
+      p.print("<tr><th>Sources</th><td>")
+      printLink(p, scmInfo.browseUrl.toExternalForm, scmInfo.browseUrl.toExternalForm)
+      p.print("</td></tr>")
+        .println()
     }
     p.indent(-2).println()
     p.print("</table>").println()

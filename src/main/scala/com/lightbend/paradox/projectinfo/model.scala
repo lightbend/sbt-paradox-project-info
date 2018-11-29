@@ -24,15 +24,22 @@ import com.typesafe.config.Config
 import scala.collection.immutable
 import scala.collection.JavaConverters._
 
-case class SbtValues(artifact: String, version: String)
+case class SbtValues(artifact: String,
+                     version: String,
+                     organization: String,
+                     homepage: Option[sbt.URL],
+                     scmInfo: Option[sbt.librarymanagement.ScmInfo],
+                     licenses: immutable.Seq[(String, sbt.URL)],
+                     crossScalaVersions: immutable.Seq[String])
 
 trait ReadinessLevel { def name: String }
 object ReadinessLevel {
   case object Supported extends ReadinessLevel {
-    val name = "<a href=\"https://www.lightbend.com/subscription\">Lightbend</a> provides Developer Support"
+    val name =
+      "<a href=\"https://www.lightbend.com/subscription\" target=\"_blank\">Lightbend Subscription</a> provides support"
   }
   case object Certified extends ReadinessLevel {
-    val name = "Certified by <a href=\"https://www.lightbend.com/\">Lightbend</a>"
+    val name = "Certified by <a href=\"https://www.lightbend.com/\" target=\"_blank\">Lightbend</a>"
   }
   case object Incubating extends ReadinessLevel {
     val name = "Incubating"
@@ -93,12 +100,14 @@ object ProjectInfo {
   import Util.ExtendedConfig
 
   def apply(name: String, c: Config): ProjectInfo = {
-    val title         = c.getOption("title", _.getString(_)).getOrElse(name)
-    val scalaVersions = c.getStringList("scala-versions").asScala.toList
-    val jdkVersions   = c.getStringList("jdk-versions").asScala.toList
-    val jpmsName      = c.getOption("jpms-name", _.getString(_))
-    val issues        = c.getOption("issues", (c, s) => Link(c.getConfig(s)))
-    val releaseNotes  = c.getOption("release-notes", (c, s) => Link(c.getConfig(s)))
+    val title = c.getOption("title", _.getString(_)).getOrElse(name)
+    val scalaVersions =
+      if (c.hasPath("scala-versions")) c.getStringList("scala-versions").asScala.toList
+      else immutable.Seq.empty
+    val jdkVersions  = c.getStringList("jdk-versions").asScala.toList
+    val jpmsName     = c.getOption("jpms-name", _.getString(_))
+    val issues       = c.getOption("issues", (c, s) => Link(c.getConfig(s)))
+    val releaseNotes = c.getOption("release-notes", (c, s) => Link(c.getConfig(s)))
     val levels =
       for { item <- c.getObjectList("levels").asScala.toList } yield {
         Level(item.toConfig)

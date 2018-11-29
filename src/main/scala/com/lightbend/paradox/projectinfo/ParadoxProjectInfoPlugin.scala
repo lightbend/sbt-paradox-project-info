@@ -44,11 +44,16 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
               if (f.exists()) {
                 val config    = ConfigFactory.parseFile(f).resolve().getConfig("project-info")
                 val extracted = Project.extract(s)
-                val sbtDetails: String => SbtValues = moduleName => {
+                val sbtDetails: String => SbtValues = projectName => {
+                  val project = LocalProject(projectName)
                   SbtValues(
-//                    extracted.get(LocalProject(moduleName) / name),
-                    extracted.get(LocalRootProject / name),
-                    extracted.get(LocalRootProject / version),
+                    extracted.get(project / name),
+                    extracted.get(project / version),
+                    extracted.get(project / organization),
+                    extracted.get(project / homepage),
+                    extracted.get(project / scmInfo),
+                    extracted.get(project / licenses).toList,
+                    extracted.get(project / crossScalaVersions).toList,
                   )
                 }
                 new ProjectInfoDirective(config, sbtDetails)
