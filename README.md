@@ -47,12 +47,12 @@ project-info {
 ```
 [Full Source](https://github.com/lightbend/sbt-paradox-project-info/blob/master/src/sbt-test/project-info/happy-path/project/project-info.conf)
 
-Use the `@@project-info` directive in the Paradox markdown files and reference the project
+Use the `@@project-info` directive in the Paradox markdown files and reference the project by its sbt `projectId` (when using the `project` sbt macro it is the name of the `val`).
 
 ```markdown
 # The Test Kit
 
-@@project-info { project="core" }
+@@project-info { projectId="core" }
 
 The quick brown fox...
 

@@ -11,7 +11,7 @@ val commonSettings = Seq(
             "git@github.com:lightbend/sbt-paradox-project-info.git")),
 )
 
-lazy val core = project
+lazy val core = Project(id = "coreId", base = file("core"))
   .settings(commonSettings)
   .settings(
     version            := "0.1.2.3",

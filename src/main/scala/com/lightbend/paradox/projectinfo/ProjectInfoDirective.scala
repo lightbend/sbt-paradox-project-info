@@ -26,11 +26,13 @@ import org.pegdown.ast.{DirectiveNode, Visitor}
 class ProjectInfoDirective(config: Config, moduleToSbtValues: String => SbtValues)
     extends LeafBlockDirective("project-info") {
   def render(node: DirectiveNode, visitor: Visitor, printer: Printer): Unit = {
-    val moduleName = node.attributes.value("project")
-    val module     = config.getConfig(moduleName)
-    val data       = ProjectInfo(moduleName, module)
-    val sbtValues  = moduleToSbtValues(moduleName)
-    ProjectInfoDirective.renderInfo(printer, data, sbtValues)
+    val projectId = node.attributes.value("projectId")
+    if (config.hasPath(projectId)) {
+      val module    = config.getConfig(projectId)
+      val data      = ProjectInfo(projectId, module)
+      val sbtValues = moduleToSbtValues(projectId)
+      ProjectInfoDirective.renderInfo(printer, data, sbtValues)
+    } else throw new RuntimeException(s"project-info.conf does not contain `$projectId`")
   }
 }
 
@@ -106,32 +108,28 @@ object ProjectInfoDirective {
     currentLevel.note.foreach { text =>
       p.print("<div>Note: ").printEncoded(text).print("</div>").println()
     }
-    p.print("</td></tr>").println()
+    p.print("</td></tr>")
     sbtValues.homepage.foreach { page =>
-      p.print("<tr><th>Home page</th><td>")
+      p.println().print("<tr><th>Home page</th><td>")
       printLink(p, page.toExternalForm, page.toExternalForm)
       p.print("</td></tr>")
-        .println()
     }
     releaseNotes.foreach {
       case Link(url, text) =>
-        p.print("<tr><th>Release notes</th><td>")
+        p.println().print("<tr><th>Release notes</th><td>")
         printLink(p, url, text.getOrElse("Release notes"))
         p.print("</td></tr>")
-          .println()
     }
     issues.foreach {
       case Link(url, text) =>
-        p.print("<tr><th>Issues</th><td>")
+        p.println().print("<tr><th>Issues</th><td>")
         printLink(p, url, text.getOrElse("Issue tracker"))
         p.print("</td></tr>")
-          .println()
     }
     sbtValues.scmInfo.foreach { scmInfo =>
-      p.print("<tr><th>Sources</th><td>")
+      p.println().print("<tr><th>Sources</th><td>")
       printLink(p, scmInfo.browseUrl.toExternalForm, scmInfo.browseUrl.toExternalForm)
       p.print("</td></tr>")
-        .println()
     }
     p.indent(-2).println()
     p.print("</table>").println()

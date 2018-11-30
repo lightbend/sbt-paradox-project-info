@@ -1,7 +1,7 @@
 The project information:
 
-@@project-info { project="core" }
+@@project-info { projectId="coreId" }
 
 <hr/>
 
-@@project-info { project="testkit" }
+@@project-info { projectId="testkit" }
