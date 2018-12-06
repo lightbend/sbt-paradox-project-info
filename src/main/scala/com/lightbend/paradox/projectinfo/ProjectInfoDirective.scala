@@ -36,12 +36,17 @@ class ProjectInfoDirective(config: Config, moduleToSbtValues: String => SbtValue
 }
 
 object ProjectInfoDirective {
-  def printLink(p: Printer, url: String, text: String): Unit =
+  def printLink(p: Printer, url: String, text: String, newTab: Boolean): Unit = {
     p.print("<a href=\"")
       .print(url)
-      .print("\" target=\"_blank\" rel=\"noopener noreferrer\">")
+      .print("\"")
+    if (newTab) {
+      p.print(" target=\"_blank\" rel=\"noopener noreferrer\"")
+    }
+    p.print(">")
       .print(text)
       .print("</a>")
+  }
 
   val formatter = DateTimeFormatter.ISO_LOCAL_DATE
   def renderInfo(p: Printer, data: SbtAndProjectInfo): Unit = {
@@ -61,7 +66,14 @@ object ProjectInfoDirective {
       .println()
       .print("<div>")
       .print(sbtValues.version)
-      .print("</div></td></tr>")
+      .print("</div>")
+    snapshots.foreach {
+      case Link(url, text, newTab) =>
+        p.println().print("<div>")
+        printLink(p, url, text.getOrElse("Snapshots"), newTab)
+        p.print("</div>").println()
+    }
+    p.print("</td></tr>")
       .println()
     if (jdkVersions.nonEmpty) {
       p.print("<tr><th>JDK versions</th><td>")
@@ -88,7 +100,7 @@ object ProjectInfoDirective {
         lic <- sbtValues.licenses
       } {
         p.print("<div>")
-        printLink(p, lic._2.toString, lic._1)
+        printLink(p, lic._2.toString, lic._1, newTab = true)
         p.print("</div>").println()
       }
       p.print("</td></tr>").println()
@@ -111,24 +123,44 @@ object ProjectInfoDirective {
     p.print("</td></tr>")
     sbtValues.homepage.foreach { page =>
       p.println().print("<tr><th>Home page</th><td>")
-      printLink(p, page.toExternalForm, page.toExternalForm)
+      printLink(p, page.toExternalForm, page.toExternalForm, false)
       p.print("</td></tr>")
     }
+    if (apiDocs.nonEmpty) {
+      p.println().print("<tr><th>API documentation</th><td>")
+      apiDocs.foreach {
+        case Link(url, text, newTab) =>
+          p.println().print("<div>")
+          printLink(p, url, text.getOrElse("API"), newTab)
+          p.print("</div>")
+      }
+      p.println().print("</td></tr>")
+    }
+    if (forums.nonEmpty) {
+      p.println().print("<tr><th>Forums</th><td>")
+      forums.foreach {
+        case Link(url, text, newTab) =>
+          p.println().print("<div>")
+          printLink(p, url, text.getOrElse("Forum"), newTab)
+          p.print("</div>")
+      }
+      p.println().print("</td></tr>")
+    }
     releaseNotes.foreach {
-      case Link(url, text) =>
+      case Link(url, text, newTab) =>
         p.println().print("<tr><th>Release notes</th><td>")
-        printLink(p, url, text.getOrElse("Release notes"))
+        printLink(p, url, text.getOrElse("Release notes"), newTab)
         p.print("</td></tr>")
     }
     issues.foreach {
-      case Link(url, text) =>
+      case Link(url, text, newTab) =>
         p.println().print("<tr><th>Issues</th><td>")
-        printLink(p, url, text.getOrElse("Issue tracker"))
+        printLink(p, url, text.getOrElse("Issue tracker"), newTab)
         p.print("</td></tr>")
     }
     sbtValues.scmInfo.foreach { scmInfo =>
       p.println().print("<tr><th>Sources</th><td>")
-      printLink(p, scmInfo.browseUrl.toExternalForm, scmInfo.browseUrl.toExternalForm)
+      printLink(p, scmInfo.browseUrl.toExternalForm, scmInfo.browseUrl.toExternalForm, newTab = true)
       p.print("</td></tr>")
     }
     p.indent(-2).println()

@@ -58,14 +58,15 @@ object ReadinessLevel {
   }
 }
 
-case class Link(url: String, text: Option[String])
+case class Link(url: String, text: Option[String], newTab: Boolean = true)
 
 object Link {
   def apply(c: Config): Link = {
     import Util.ExtendedConfig
-    val url  = c.getString("url")
-    val text = c.getOption("text", _.getString(_))
-    Link(url, text)
+    val url    = c.getString("url")
+    val text   = c.getOption("text", _.getString(_))
+    val newTab = c.getOptionalBoolean("new-tab", true)
+    Link(url, text, newTab)
   }
 }
 
@@ -94,7 +95,10 @@ case class ProjectInfo(name: String,
                        jdkVersions: immutable.Seq[String],
                        jpmsName: Option[String],
                        issues: Option[Link],
+                       apiDocs: immutable.Seq[Link],
+                       forums: immutable.Seq[Link],
                        releaseNotes: Option[Link],
+                       snapshots: Option[Link],
                        levels: immutable.Seq[Level])
 
 object ProjectInfo {
@@ -108,12 +112,25 @@ object ProjectInfo {
     val jdkVersions  = c.getStringList("jdk-versions").asScala.toList
     val jpmsName     = c.getOption("jpms-name", _.getString(_))
     val issues       = c.getOption("issues", (c, s) => Link(c.getConfig(s)))
+    val apiDocs      = c.getParsedList("api-docs", c => Link(c))
+    val forums       = c.getParsedList("forums", c => Link(c))
     val releaseNotes = c.getOption("release-notes", (c, s) => Link(c.getConfig(s)))
+    val snapshots    = c.getOption("snapshots", (c, s) => Link(c.getConfig(s)))
     val levels =
       for { item <- c.getObjectList("levels").asScala.toList } yield {
         Level(item.toConfig)
       }
-    new ProjectInfo(name, title, scalaVersions, jdkVersions, jpmsName, issues, releaseNotes, levels)
+    new ProjectInfo(name,
+                    title,
+                    scalaVersions,
+                    jdkVersions,
+                    jpmsName,
+                    issues,
+                    apiDocs,
+                    forums,
+                    releaseNotes,
+                    snapshots,
+                    levels)
   }
 }
 
@@ -127,6 +144,14 @@ object Util {
     def getLocalDate(path: String): LocalDate           = LocalDate.parse(c.getString(path), dateFormat)
     def getOption[T](path: String, read: (Config, String) => T): Option[T] =
       if (c.hasPath(path)) Some(read(c, path)) else None
+    def getOptionalBoolean(path: String, defaultValue: Boolean): Boolean =
+      if (c.hasPath(path)) c.getBoolean(path) else defaultValue
+    def getParsedList[T](path: String, read: Config => T): List[T] =
+      if (c.hasPath(path)) {
+        for (cObj <- c.getObjectList(path).asScala.toList) yield {
+          read(cObj.toConfig)
+        }
+      } else List.empty
   }
 }
 

@@ -18,9 +18,15 @@ project-info {
   jdk-versions: ["OpenJDK 8"]
   core {
     title: "The core project"
+    // if undefined, sbt's crossScalaVersions are used
     scala-versions: ${project-info.scala-versions}
     jdk-versions: ${project-info.jdk-versions}
     jpms-name: "alpakka.core"
+    snapshots: {
+      text: "Snapshots are available"
+      url: "snapshots.html"
+      new-tab: false
+    }
     issues: {
       url: "https://github.com/lightbend/sbt-paradox-project-info/issues"
       text: "Github issues"
@@ -29,6 +35,22 @@ project-info {
       url: "https://github.com/lightbend/sbt-paradox-project-info/releases"
       text: "Github releases"
     }
+    api-docs: [
+      {
+        text: "Scaladoc"
+        url: "https://developer.lightbend.com/docs/api/alpakka/current/akka/stream/alpakka/index.html"
+      }
+    ]
+    forums: [
+      {
+        text: "Lightbend Discuss"
+        url: "https://discuss.lightbend.com/c/akka/"
+      }
+      {
+        text: "akka/alpakka-kafka Gitter channel"
+        url: "https://gitter.im/akka/alpakka-kafka"
+      }
+    ]
     levels: [
       {
         readiness: Supported
