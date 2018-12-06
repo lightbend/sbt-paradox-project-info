@@ -28,10 +28,9 @@ class ProjectInfoDirective(config: Config, moduleToSbtValues: String => SbtValue
   def render(node: DirectiveNode, visitor: Visitor, printer: Printer): Unit = {
     val projectId = node.attributes.value("projectId")
     if (config.hasPath(projectId)) {
-      val module    = config.getConfig(projectId)
-      val data      = ProjectInfo(projectId, module)
-      val sbtValues = moduleToSbtValues(projectId)
-      ProjectInfoDirective.renderInfo(printer, data, sbtValues)
+      val module = config.getConfig(projectId)
+      val data   = SbtAndProjectInfo(moduleToSbtValues(projectId), ProjectInfo(projectId, module))
+      ProjectInfoDirective.renderInfo(printer, data)
     } else throw new RuntimeException(s"project-info.conf does not contain `$projectId`")
   }
 }
@@ -45,8 +44,9 @@ object ProjectInfoDirective {
       .print("</a>")
 
   val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-  def renderInfo(p: Printer, data: ProjectInfo, sbtValues: SbtValues): Unit = {
-    import data._
+  def renderInfo(p: Printer, data: SbtAndProjectInfo): Unit = {
+    import data.projectInfo._
+    import data.sbtValues
     p.printchkln()
     p.print("""<table class="project-info">""").println()
     p.indent(2)

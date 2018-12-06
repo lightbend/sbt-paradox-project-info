@@ -16,10 +16,11 @@
 
 package com.lightbend.paradox.projectinfo
 
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import com.typesafe.config.Config
+import com.typesafe.config.{Config, ConfigFactory}
 
 import scala.collection.immutable
 import scala.collection.JavaConverters._
@@ -116,6 +117,8 @@ object ProjectInfo {
   }
 }
 
+case class SbtAndProjectInfo(sbtValues: SbtValues, projectInfo: ProjectInfo)
+
 object Util {
   private val dateFormat = DateTimeFormatter.ISO_LOCAL_DATE
 
@@ -124,5 +127,15 @@ object Util {
     def getLocalDate(path: String): LocalDate           = LocalDate.parse(c.getString(path), dateFormat)
     def getOption[T](path: String, read: (Config, String) => T): Option[T] =
       if (c.hasPath(path)) Some(read(c, path)) else None
+  }
+}
+
+object ProjectInfoReader {
+
+  def readConfig(sbtBaseDir: File): Either[String, Config] = {
+    val f = new File(sbtBaseDir, "project/project-info.conf")
+    if (f.exists()) {
+      Right(ConfigFactory.parseFile(f).resolve().getConfig("project-info"))
+    } else Left(s"Could not retrieve project-info from ${f.getAbsolutePath}")
   }
 }
