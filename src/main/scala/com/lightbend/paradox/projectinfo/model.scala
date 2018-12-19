@@ -45,6 +45,9 @@ object ReadinessLevel {
   case object Incubating extends ReadinessLevel {
     val name = "Incubating"
   }
+  case object CommunityDriven extends ReadinessLevel {
+    val name = "Community-driven"
+  }
   case object EndOfLife extends ReadinessLevel {
     val name = "End-of-Life, it is not recommended to use this project any more."
   }
@@ -53,6 +56,7 @@ object ReadinessLevel {
     case "Supported" => Supported
     case "Certified" => Certified
     case "Incubating" => Incubating
+    case "CommunityDriven" => CommunityDriven
     case "EndOfLife" => EndOfLife
     case other => throw new IllegalArgumentException(s"unknown readiness level: $other")
   }
