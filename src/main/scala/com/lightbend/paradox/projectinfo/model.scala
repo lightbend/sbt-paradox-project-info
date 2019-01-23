@@ -35,27 +35,26 @@ case class SbtValues(artifact: String,
 
 trait ReadinessLevel { def name: String }
 object ReadinessLevel {
-  private val glossary1 =
-    "<a href=\"https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html"
-  private val glossary2 = "\" target=\"_blank\" rel=\"noopener noreferrer\">"
+  private def glossary(anchor: String, label: String): String =
+    s"""<a href="https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#$anchor" target="_blank" rel="noopener noreferrer">$label</a>""".stripMargin
 
   case object Supported extends ReadinessLevel {
     val name =
-      s"""${glossary1}#supported${glossary2}Supported</a>, <a href="https://www.lightbend.com/subscription" target="_blank">Lightbend Subscription</a> provides support"""
+      s"""${glossary("supported", "Supported")}, <a href="https://www.lightbend.com/subscription" target="_blank">Lightbend Subscription</a> provides support"""
   }
   case object Certified extends ReadinessLevel {
     val name =
-      s"""${glossary1}#certified${glossary2}Certified</a> by <a href="https://www.lightbend.com/" target="_blank">Lightbend</a>"""
+      s"""${glossary("certified", "Certified")} by <a href="https://www.lightbend.com/" target="_blank">Lightbend</a>"""
   }
   case object Incubating extends ReadinessLevel {
-    val name = s"${glossary1}#incubating${glossary2}Incubating</a>"
+    val name = glossary("incubating", "Incubating")
   }
   case object CommunityDriven extends ReadinessLevel {
-    val name = s"${glossary1}#community-driven${glossary2}Community-driven</a>"
+    val name = glossary("community-driven", "Community-driven")
   }
   case object EndOfLife extends ReadinessLevel {
     val name =
-      s"${glossary1}#end-of-life-eol-${glossary2}End-of-Life</a>, it is not recommended to use this project any more."
+      s"${glossary("end-of-life-eol-", "End-of-Life")}, it is not recommended to use this project any more."
   }
 
   def fromString(s: String): ReadinessLevel = s match {
