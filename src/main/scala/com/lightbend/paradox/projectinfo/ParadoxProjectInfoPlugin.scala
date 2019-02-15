@@ -19,13 +19,12 @@ package com.lightbend.paradox.projectinfo
 import com.lightbend.paradox.markdown.Writer
 import com.lightbend.paradox.sbt.ParadoxPlugin
 import com.lightbend.paradox.sbt.ParadoxPlugin.autoImport.paradoxDirectives
-import com.typesafe.config.ConfigFactory
-import sbt._
+import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import sbt.Keys._
+import sbt._
 
 object ParadoxProjectInfoPlugin extends AutoPlugin {
   object autoImport extends ParadoxProjectInfoPluginKeys
-  import autoImport._
 
   override def requires: Plugins = ParadoxPlugin
 
@@ -42,8 +41,14 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
             _: Writer.Context ⇒
               val f = new File((LocalRootProject / baseDirectory).value, "project/project-info.conf")
               if (f.exists()) {
-                val config    = ConfigFactory.parseFile(f).resolve().getConfig("project-info")
-                val extracted = Project.extract(s)
+                val extracted   = Project.extract(s)
+                val rootVersion = extracted.get(version)
+                val config = ConfigFactory
+                  .parseFile(f)
+                  // inject into config before resolving
+                  .withValue("project-info.version", ConfigValueFactory.fromAnyRef(rootVersion))
+                  .resolve()
+                  .getConfig("project-info")
                 val sbtDetails: String => SbtValues = projectId => {
                   val project = LocalProject(projectId)
                   val projectName = try { extracted.get(project / name) } catch {

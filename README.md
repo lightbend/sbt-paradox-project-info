@@ -7,13 +7,15 @@ A [paradox](https://github.com/lightbend/paradox/) directive that includes stand
 Add the Paradox plug-in as sbt plug-on
 
 ```scala
-addSbtPlugin("com.lightbend.paradox" % "sbt-paradox-project-info" % "<latest>")
+addSbtPlugin("com.lightbend.paradox" % "sbt-paradox-project-info" % <latest>)
 ```
 
 Create a project info file in `project/project-info.conf` using HOCON format:
 
 ```hocon
 project-info {
+  # version is overridden with sbt's project version
+  version: "current"
   scala-versions: ["2.12", "2.13"]
   jdk-versions: ["OpenJDK 8"]
   core {
@@ -38,7 +40,7 @@ project-info {
     api-docs: [
       {
         text: "Scaladoc"
-        url: "https://developer.lightbend.com/docs/api/alpakka/current/akka/stream/alpakka/index.html"
+        url: "https://developer.lightbend.com/docs/api/alpakka/"${project-info.version}"/akka/stream/alpakka/index.html"
       }
     ]
     forums: [
