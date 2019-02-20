@@ -18,4 +18,8 @@ package com.lightbend.paradox.projectinfo
 
 import sbt._
 
-trait ParadoxProjectInfoPluginKeys {}
+trait ParadoxProjectInfoPluginKeys {
+  val projectInfoVersion = settingKey[String]("The version/revision propagated into `project.info.version`.")
+}
+
+object ParadoxProjectInfoPluginKeys extends ParadoxProjectInfoPluginKeys

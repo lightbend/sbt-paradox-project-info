@@ -24,6 +24,8 @@ import sbt.Keys._
 import sbt._
 
 object ParadoxProjectInfoPlugin extends AutoPlugin {
+  import ParadoxProjectInfoPluginKeys._
+
   object autoImport extends ParadoxProjectInfoPluginKeys
 
   override def requires: Plugins = ParadoxPlugin
@@ -33,6 +35,7 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
   override def projectSettings: Seq[Setting[_]] = projectInfoSettings(Compile)
 
   def projectInfoGlobalSettings: Seq[Setting[_]] = Seq(
+    projectInfoVersion := version.value,
     paradoxDirectives ++= Def.taskDyn {
       Def.task {
         val s = state.value
@@ -42,7 +45,7 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
               val f = new File((LocalRootProject / baseDirectory).value, "project/project-info.conf")
               if (f.exists()) {
                 val extracted   = Project.extract(s)
-                val rootVersion = extracted.get(version)
+                val rootVersion = extracted.get(projectInfoVersion)
                 val config = ConfigFactory
                   .parseFile(f)
                   // inject into config before resolving
