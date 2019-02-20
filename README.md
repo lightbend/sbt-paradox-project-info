@@ -14,7 +14,7 @@ Create a project info file in `project/project-info.conf` using HOCON format:
 
 ```hocon
 project-info {
-  # version is overridden with sbt's project version
+  # version is overridden from the `projectInfoVersion` key (which defaults to sbt's project version)
   version: "current"
   scala-versions: ["2.12", "2.13"]
   jdk-versions: ["OpenJDK 8"]
