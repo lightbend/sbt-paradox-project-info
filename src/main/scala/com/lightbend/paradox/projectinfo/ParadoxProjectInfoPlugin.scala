@@ -34,53 +34,54 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Setting[_]] = projectInfoSettings(Compile)
 
-  def projectInfoGlobalSettings: Seq[Setting[_]] = Seq(
+  override def globalSettings: Seq[Setting[_]] = Seq(
     projectInfoVersion := version.value,
-    paradoxDirectives ++= Def.taskDyn {
-      Def.task {
-        val s = state.value
-        Seq(
-          {
-            _: Writer.Context ⇒
-              val f = new File((LocalRootProject / baseDirectory).value, "project/project-info.conf")
-              if (f.exists()) {
-                val extracted   = Project.extract(s)
-                val rootVersion = extracted.get(projectInfoVersion)
-                val config = ConfigFactory
-                  .parseFile(f)
-                  // inject into config before resolving
-                  .withValue("project-info.version", ConfigValueFactory.fromAnyRef(rootVersion))
-                  .resolve()
-                  .getConfig("project-info")
-                val sbtDetails: String => SbtValues = projectId => {
-                  val project = LocalProject(projectId)
-                  val projectName = try { extracted.get(project / name) } catch {
-                    case e: Exception =>
-                      throw new RuntimeException(
-                        s"couldn't read sbt setting `$projectId / name`, does the projectId exist?")
-                  }
-                  SbtValues(
-                    projectName,
-                    extracted.get(project / version),
-                    extracted.get(project / organization),
-                    extracted.get(project / homepage),
-                    extracted.get(project / scmInfo),
-                    extracted.get(project / licenses).toList,
-                    extracted.get(project / crossScalaVersions).toList,
-                  )
-                }
-                new ProjectInfoDirective(config, sbtDetails)
-              } else {
-                throw new Error(s"Could not retrieve project-info from ${f.absolutePath}")
-              }
-          }
-        )
-      }
-    }.value
   )
 
   def projectInfoSettings(config: Configuration): Seq[Setting[_]] =
-    projectInfoGlobalSettings ++ inConfig(config)(
+    Seq(
+      paradoxDirectives ++= Def.taskDyn {
+        Def.task {
+          val s = state.value
+          Seq(
+            {
+              _: Writer.Context ⇒
+                val f = new File((LocalRootProject / baseDirectory).value, "project/project-info.conf")
+                if (f.exists()) {
+                  val extracted   = Project.extract(s)
+                  val rootVersion = extracted.get(projectInfoVersion)
+                  val config = ConfigFactory
+                    .parseFile(f)
+                    // inject into config before resolving
+                    .withValue("project-info.version", ConfigValueFactory.fromAnyRef(rootVersion))
+                    .resolve()
+                    .getConfig("project-info")
+                  val sbtDetails: String => SbtValues = projectId => {
+                    val project = LocalProject(projectId)
+                    val projectName = try { extracted.get(project / name) } catch {
+                      case e: Exception =>
+                        throw new RuntimeException(
+                          s"couldn't read sbt setting `$projectId / name`, does the projectId exist?")
+                    }
+                    SbtValues(
+                      projectName,
+                      extracted.get(project / version),
+                      extracted.get(project / organization),
+                      extracted.get(project / homepage),
+                      extracted.get(project / scmInfo),
+                      extracted.get(project / licenses).toList,
+                      extracted.get(project / crossScalaVersions).toList,
+                    )
+                  }
+                  new ProjectInfoDirective(config, sbtDetails)
+                } else {
+                  throw new Error(s"Could not retrieve project-info from ${f.absolutePath}")
+                }
+            }
+          )
+        }
+      }.value
+    ) ++ inConfig(config)(
       Seq(
         // scoped settings here
       ))
