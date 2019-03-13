@@ -55,7 +55,7 @@ object ProjectInfoDirective {
     p.printchkln()
     p.print("""<table class="project-info">""").println()
     p.indent(2)
-    p.print("<tr><th colspan=2>Project Info: ").print(title).print("</th></tr>").println()
+    p.print("""<tr><th colspan="2">Project Info: """).print(title).print("</th></tr>").println()
     p.print("<tr><th>Artifact</th><td><div>")
       .print(sbtValues.organization)
       .print("</div>")
@@ -107,7 +107,7 @@ object ProjectInfoDirective {
     }
     p.print("<tr><th>Readiness level</th><td>")
     val currentLevel = levels.head
-    p.print("<div class='readiness-level'>").print(currentLevel.level.name).print("</div>").println()
+    p.print("""<div class="readiness-level">""").print(currentLevel.level.name).print("</div>").println()
     p.print("<div>Since ")
       .print(currentLevel.sinceVersion)
       .print(", ")
