@@ -97,4 +97,3 @@ Feel free to ping contributors for code review or discussions. Pull requests are
 [bintray-badge]:         https://api.bintray.com/packages/sbt/sbt-plugin-releases/sbt-paradox-project-info/images/download.svg
 [travis]:                https://travis-ci.com/lightbend/sbt-paradox-project-info
 [travis-badge]:          https://travis-ci.com/lightbend/sbt-paradox-project-info.svg?branch=master
-
