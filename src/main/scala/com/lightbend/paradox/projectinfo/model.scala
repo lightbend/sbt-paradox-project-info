@@ -36,11 +36,11 @@ case class SbtValues(artifact: String,
 trait ReadinessLevel { def name: String }
 object ReadinessLevel {
   private def glossary(anchor: String, label: String): String =
-    s"""<a href="https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#$anchor" target="_blank" rel="noopener noreferrer">$label</a>""".stripMargin
+    s"""<a href="https://developer.lightbend.com/docs/lightbend-platform/introduction/getting-help/support-terminology.html#$anchor" target="_blank" rel="noopener">$label</a>""".stripMargin
 
   case object Supported extends ReadinessLevel {
     val name =
-      s"""${glossary("supported", "Supported")}, <a href="https://www.lightbend.com/subscription" target="_blank">Lightbend Subscription</a> provides support"""
+      s"""${glossary("supported", "Supported")}, <a href="https://www.lightbend.com/lightbend-platform-subscription" target="_blank" rel="noopener">Lightbend Platform Subscription</a> provides support"""
   }
   case object Certified extends ReadinessLevel {
     val name =
@@ -54,7 +54,7 @@ object ReadinessLevel {
   }
   case object EndOfLife extends ReadinessLevel {
     val name =
-      s"${glossary("end-of-life-eol-", "End-of-Life")}, it is not recommended to use this project any more."
+      s"${glossary("eol", "End-of-Life")}, it is not recommended to use this project any more."
   }
 
   def fromString(s: String): ReadinessLevel = s match {
