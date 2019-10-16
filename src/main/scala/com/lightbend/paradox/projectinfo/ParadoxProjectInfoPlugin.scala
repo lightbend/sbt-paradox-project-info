@@ -46,37 +46,38 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
           Seq(
             {
               _: Writer.Context ⇒
-                val f = new File((LocalRootProject / baseDirectory).value, "project/project-info.conf")
-                if (f.exists()) {
-                  val extracted   = Project.extract(s)
-                  val rootVersion = extracted.get(projectInfoVersion)
-                  val config = ConfigFactory
+                val f           = new File((LocalRootProject / baseDirectory).value, "project/project-info.conf")
+                val extracted   = Project.extract(s)
+                val rootVersion = extracted.get(projectInfoVersion)
+                val config = if (f.exists()) {
+                  ConfigFactory
                     .parseFile(f)
                     // inject into config before resolving
                     .withValue("project-info.version", ConfigValueFactory.fromAnyRef(rootVersion))
                     .resolve()
                     .getConfig("project-info")
-                  val sbtDetails: String => SbtValues = projectId => {
-                    val project = LocalProject(projectId)
-                    val projectName = try { extracted.get(project / name) } catch {
-                      case e: Exception =>
-                        throw new RuntimeException(
-                          s"couldn't read sbt setting `$projectId / name`, does the projectId exist?")
-                    }
-                    SbtValues(
-                      projectName,
-                      extracted.get(project / version),
-                      extracted.get(project / organization),
-                      extracted.get(project / homepage),
-                      extracted.get(project / scmInfo),
-                      extracted.get(project / licenses).toList,
-                      extracted.get(project / crossScalaVersions).toList,
-                    )
-                  }
-                  new ProjectInfoDirective(config, sbtDetails)
                 } else {
-                  throw new Error(s"Could not retrieve project-info from ${f.absolutePath}")
+                  sLog.value.warn(s"Could not retrieve project-info from ${f.absolutePath}")
+                  ConfigFactory.empty()
                 }
+                val sbtDetails: String => SbtValues = projectId => {
+                  val project = LocalProject(projectId)
+                  val projectName = try { extracted.get(project / name) } catch {
+                    case e: Exception =>
+                      throw new RuntimeException(
+                        s"couldn't read sbt setting `$projectId / name`, does the projectId exist?")
+                  }
+                  SbtValues(
+                    projectName,
+                    extracted.get(project / version),
+                    extracted.get(project / organization),
+                    extracted.get(project / homepage),
+                    extracted.get(project / scmInfo),
+                    extracted.get(project / licenses).toList,
+                    extracted.get(project / crossScalaVersions).toList,
+                  )
+                }
+                new ProjectInfoDirective(config, sbtDetails)
             }
           )
         }
