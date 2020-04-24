@@ -13,11 +13,11 @@ crossSbtVersions := List("1.1.0")
 organization     := "com.lightbend.paradox"
 name             := "sbt-paradox-project-info"
 
-addSbtPlugin("com.lightbend.paradox" % "sbt-paradox"          % "0.4.3")
+addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.4.3")
 
 libraryDependencies ++= Seq(
-  "com.typesafe" % "config" % "1.3.3",
-  "org.scalatest" %% "scalatest" % "3.0.8" % Test, // ApacheV2
+  "com.typesafe"  % "config"     % "1.3.3",
+  "org.scalatest" %% "scalatest" % "3.0.8" % Test // ApacheV2
 )
 
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
@@ -35,7 +35,7 @@ organizationName := "Lightbend Inc."
 startYear        := Some(2018)
 
 // no API docs
-sources in (Compile, doc) := Seq.empty
+sources in (Compile, doc)                := Seq.empty
 publishArtifact in (Compile, packageDoc) := false
 
 bintrayOrganization := Some("sbt")
