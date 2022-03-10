@@ -67,11 +67,10 @@ object ProjectInfoDirective {
       .print("<div>")
       .print(sbtValues.version)
       .print("</div>")
-    snapshots.foreach {
-      case Link(url, text, newTab) =>
-        p.println().print("<div>")
-        printLink(p, url, text.getOrElse("Snapshots"), newTab)
-        p.print("</div>").println()
+    snapshots.foreach { case Link(url, text, newTab) =>
+      p.println().print("<div>")
+      printLink(p, url, text.getOrElse("Snapshots"), newTab)
+      p.print("</div>").println()
     }
     p.print("</td></tr>")
       .println()
@@ -130,35 +129,31 @@ object ProjectInfoDirective {
     }
     if (apiDocs.nonEmpty) {
       p.println().print("<tr><th>API documentation</th><td>")
-      apiDocs.foreach {
-        case Link(url, text, newTab) =>
-          p.println().print("<div>")
-          printLink(p, url, text.getOrElse("API"), newTab)
-          p.print("</div>")
+      apiDocs.foreach { case Link(url, text, newTab) =>
+        p.println().print("<div>")
+        printLink(p, url, text.getOrElse("API"), newTab)
+        p.print("</div>")
       }
       p.println().print("</td></tr>")
     }
     if (forums.nonEmpty) {
       p.println().print("<tr><th>Forums</th><td>")
-      forums.foreach {
-        case Link(url, text, newTab) =>
-          p.println().print("<div>")
-          printLink(p, url, text.getOrElse("Forum"), newTab)
-          p.print("</div>")
+      forums.foreach { case Link(url, text, newTab) =>
+        p.println().print("<div>")
+        printLink(p, url, text.getOrElse("Forum"), newTab)
+        p.print("</div>")
       }
       p.println().print("</td></tr>")
     }
-    releaseNotes.foreach {
-      case Link(url, text, newTab) =>
-        p.println().print("<tr><th>Release notes</th><td>")
-        printLink(p, url, text.getOrElse("Release notes"), newTab)
-        p.print("</td></tr>")
+    releaseNotes.foreach { case Link(url, text, newTab) =>
+      p.println().print("<tr><th>Release notes</th><td>")
+      printLink(p, url, text.getOrElse("Release notes"), newTab)
+      p.print("</td></tr>")
     }
-    issues.foreach {
-      case Link(url, text, newTab) =>
-        p.println().print("<tr><th>Issues</th><td>")
-        printLink(p, url, text.getOrElse("Issue tracker"), newTab)
-        p.print("</td></tr>")
+    issues.foreach { case Link(url, text, newTab) =>
+      p.println().print("<tr><th>Issues</th><td>")
+      printLink(p, url, text.getOrElse("Issue tracker"), newTab)
+      p.print("</td></tr>")
     }
     sbtValues.scmInfo.foreach { scmInfo =>
       p.println().print("<tr><th>Sources</th><td>")

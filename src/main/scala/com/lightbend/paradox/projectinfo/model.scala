@@ -25,13 +25,15 @@ import com.typesafe.config.{Config, ConfigFactory}
 import scala.collection.immutable
 import scala.collection.JavaConverters._
 
-case class SbtValues(artifact: String,
-                     version: String,
-                     organization: String,
-                     homepage: Option[sbt.URL],
-                     scmInfo: Option[sbt.librarymanagement.ScmInfo],
-                     licenses: immutable.Seq[(String, sbt.URL)],
-                     crossScalaVersions: immutable.Seq[String])
+case class SbtValues(
+    artifact: String,
+    version: String,
+    organization: String,
+    homepage: Option[sbt.URL],
+    scmInfo: Option[sbt.librarymanagement.ScmInfo],
+    licenses: immutable.Seq[(String, sbt.URL)],
+    crossScalaVersions: immutable.Seq[String]
+)
 
 trait ReadinessLevel { def name: String }
 object ReadinessLevel {
@@ -40,7 +42,10 @@ object ReadinessLevel {
 
   case object Supported extends ReadinessLevel {
     val name =
-      s"""${glossary("supported", "Supported")}, <a href="https://www.lightbend.com/lightbend-subscription" target="_blank" rel="noopener">Lightbend Subscription</a> provides support"""
+      s"""${glossary(
+          "supported",
+          "Supported"
+        )}, <a href="https://www.lightbend.com/lightbend-subscription" target="_blank" rel="noopener">Lightbend Subscription</a> provides support"""
   }
   case object Certified extends ReadinessLevel {
     val name =
@@ -79,11 +84,13 @@ object Link {
   }
 }
 
-case class Level(level: ReadinessLevel,
-                 since: LocalDate,
-                 sinceVersion: String,
-                 ends: Option[LocalDate],
-                 note: Option[String])
+case class Level(
+    level: ReadinessLevel,
+    since: LocalDate,
+    sinceVersion: String,
+    ends: Option[LocalDate],
+    note: Option[String]
+)
 
 object Level {
 
@@ -98,17 +105,19 @@ object Level {
   }
 }
 
-case class ProjectInfo(name: String,
-                       title: String,
-                       scalaVersions: immutable.Seq[String],
-                       jdkVersions: immutable.Seq[String],
-                       jpmsName: Option[String],
-                       issues: Option[Link],
-                       apiDocs: immutable.Seq[Link],
-                       forums: immutable.Seq[Link],
-                       releaseNotes: Option[Link],
-                       snapshots: Option[Link],
-                       levels: immutable.Seq[Level])
+case class ProjectInfo(
+    name: String,
+    title: String,
+    scalaVersions: immutable.Seq[String],
+    jdkVersions: immutable.Seq[String],
+    jpmsName: Option[String],
+    issues: Option[Link],
+    apiDocs: immutable.Seq[Link],
+    forums: immutable.Seq[Link],
+    releaseNotes: Option[Link],
+    snapshots: Option[Link],
+    levels: immutable.Seq[Level]
+)
 
 object ProjectInfo {
   import Util.ExtendedConfig
@@ -126,24 +135,25 @@ object ProjectInfo {
     val releaseNotes = c.getOption("release-notes", (c, s) => Link(c.getConfig(s)))
     val snapshots    = c.getOption("snapshots", (c, s) => Link(c.getConfig(s)))
     val levels = c
-      .getOption("levels", (config, string) => {
-        for { item <- config.getObjectList(string).asScala.toList } yield {
-          Level(item.toConfig)
-        }
-      })
+      .getOption(
+        "levels",
+        (config, string) => for { item <- config.getObjectList(string).asScala.toList } yield Level(item.toConfig)
+      )
       .getOrElse(List.empty)
 
-    new ProjectInfo(name,
-                    title,
-                    scalaVersions,
-                    jdkVersions,
-                    jpmsName,
-                    issues,
-                    apiDocs,
-                    forums,
-                    releaseNotes,
-                    snapshots,
-                    levels)
+    new ProjectInfo(
+      name,
+      title,
+      scalaVersions,
+      jdkVersions,
+      jpmsName,
+      issues,
+      apiDocs,
+      forums,
+      releaseNotes,
+      snapshots,
+      levels
+    )
   }
 }
 
@@ -161,9 +171,7 @@ object Util {
       if (c.hasPath(path)) c.getBoolean(path) else defaultValue
     def getParsedList[T](path: String, read: Config => T): List[T] =
       if (c.hasPath(path)) {
-        for (cObj <- c.getObjectList(path).asScala.toList) yield {
-          read(cObj.toConfig)
-        }
+        for (cObj <- c.getObjectList(path).asScala.toList) yield read(cObj.toConfig)
       } else List.empty
   }
 }
