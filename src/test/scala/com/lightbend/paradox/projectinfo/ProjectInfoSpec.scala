@@ -57,14 +57,14 @@ class ProjectInfoSpec extends WordSpec with Matchers {
           "core",
           "core",
           scalaVersions = List("2.12", "2.13"),
-          jdkVersions   = List("OpenJDK 8"),
+          jdkVersions = List("OpenJDK 8"),
           Some("alpakka.core"),
-          issues       = None,
-          apiDocs      = immutable.Seq.empty,
-          forums       = immutable.Seq.empty,
+          issues = None,
+          apiDocs = immutable.Seq.empty,
+          forums = immutable.Seq.empty,
           releaseNotes = None,
-          snapshots    = None,
-          levels       = List()
+          snapshots = None,
+          levels = List()
         )
       )
     }
@@ -97,22 +97,26 @@ class ProjectInfoSpec extends WordSpec with Matchers {
       ProjectInfo(name, conf) should be(
         ProjectInfo(
           "core",
-          title         = "The core project",
+          title = "The core project",
           scalaVersions = List("2.12", "2.13"),
-          jdkVersions   = List("OpenJDK 8"),
+          jdkVersions = List("OpenJDK 8"),
           Some("alpakka.core"),
-          issues       = None,
-          apiDocs      = immutable.Seq.empty,
-          forums       = immutable.Seq.empty,
+          issues = None,
+          apiDocs = immutable.Seq.empty,
+          forums = immutable.Seq.empty,
           releaseNotes = None,
-          snapshots    = None,
+          snapshots = None,
           levels = List(
-            Level(ReadinessLevel.Incubating,
-                  LocalDate.of(2018, 11, 22),
-                  "0.18",
-                  None,
-                  Some("Community rocks this module"))),
-        ))
+            Level(
+              ReadinessLevel.Incubating,
+              LocalDate.of(2018, 11, 22),
+              "0.18",
+              None,
+              Some("Community rocks this module")
+            )
+          )
+        )
+      )
     }
 
     "support history" in {
@@ -150,24 +154,27 @@ class ProjectInfoSpec extends WordSpec with Matchers {
       ProjectInfo(name, conf) should be(
         ProjectInfo(
           "core",
-          title         = "The core project",
+          title = "The core project",
           scalaVersions = List("2.12", "2.13"),
-          jdkVersions   = List("OpenJDK 8"),
+          jdkVersions = List("OpenJDK 8"),
           Some("alpakka.core"),
-          issues       = Some(Link("https://github.com/akka/alpakka/labels/p:core", None)),
-          apiDocs      = immutable.Seq.empty,
-          forums       = immutable.Seq.empty,
+          issues = Some(Link("https://github.com/akka/alpakka/labels/p:core", None)),
+          apiDocs = immutable.Seq.empty,
+          forums = immutable.Seq.empty,
           releaseNotes = None,
-          snapshots    = None,
+          snapshots = None,
           levels = List(
             Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None),
-            Level(ReadinessLevel.Incubating,
-                  LocalDate.of(2018, 11, 22),
-                  "0.18",
-                  None,
-                  Some("Community rocks this module"))
+            Level(
+              ReadinessLevel.Incubating,
+              LocalDate.of(2018, 11, 22),
+              "0.18",
+              None,
+              Some("Community rocks this module")
+            )
           )
-        ))
+        )
+      )
     }
 
     "support API docs as list" in {
@@ -209,24 +216,29 @@ class ProjectInfoSpec extends WordSpec with Matchers {
       ProjectInfo(name, conf) should be(
         ProjectInfo(
           "core",
-          title         = "The core project",
+          title = "The core project",
           scalaVersions = List("2.12", "2.13"),
-          jdkVersions   = List("OpenJDK 8"),
+          jdkVersions = List("OpenJDK 8"),
           Some("alpakka.core"),
           issues = Some(Link("https://github.com/akka/alpakka/labels/p:core", None)),
           apiDocs = List(
-            Link("https://developer.lightbend.com/docs/api/alpakka/current/akka/stream/alpakka/index.html",
-                 Some("Javadoc")),
-            Link("https://developer.lightbend.com/docs/api/alpakka/current/akka/stream/alpakka/index.html",
-                 Some("Scaladoc"))
+            Link(
+              "https://developer.lightbend.com/docs/api/alpakka/current/akka/stream/alpakka/index.html",
+              Some("Javadoc")
+            ),
+            Link(
+              "https://developer.lightbend.com/docs/api/alpakka/current/akka/stream/alpakka/index.html",
+              Some("Scaladoc")
+            )
           ),
-          forums       = immutable.Seq.empty,
+          forums = immutable.Seq.empty,
           releaseNotes = None,
-          snapshots    = None,
+          snapshots = None,
           levels = List(
             Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
           )
-        ))
+        )
+      )
     }
 
     "support forums as list" in {
@@ -268,22 +280,23 @@ class ProjectInfoSpec extends WordSpec with Matchers {
       ProjectInfo(name, conf) should be(
         ProjectInfo(
           "core",
-          title         = "The core project",
+          title = "The core project",
           scalaVersions = List("2.12", "2.13"),
-          jdkVersions   = List("OpenJDK 8"),
+          jdkVersions = List("OpenJDK 8"),
           Some("alpakka.core"),
-          issues  = Some(Link("https://github.com/akka/alpakka/labels/p:core", None)),
+          issues = Some(Link("https://github.com/akka/alpakka/labels/p:core", None)),
           apiDocs = immutable.Seq.empty,
           forums = List(
             Link("https://discuss.lightbend.com/c/akka/", Some("Lightbend Discuss")),
             Link("https://gitter.im/akka/alpakka-kafka", Some("akka/alpakka-kafka Gitter channel"))
           ),
           releaseNotes = None,
-          snapshots    = None,
+          snapshots = None,
           levels = List(
             Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
           )
-        ))
+        )
+      )
     }
 
     "support snapshot link" in {
@@ -315,22 +328,26 @@ class ProjectInfoSpec extends WordSpec with Matchers {
       ProjectInfo(name, conf) should be(
         ProjectInfo(
           "core",
-          title         = "The core project",
+          title = "The core project",
           scalaVersions = List("2.12", "2.13"),
-          jdkVersions   = List("OpenJDK 8"),
-          jpmsName      = None,
-          issues        = None,
-          apiDocs       = immutable.Seq.empty,
-          forums        = immutable.Seq.empty,
-          releaseNotes  = None,
+          jdkVersions = List("OpenJDK 8"),
+          jpmsName = None,
+          issues = None,
+          apiDocs = immutable.Seq.empty,
+          forums = immutable.Seq.empty,
+          releaseNotes = None,
           snapshots = Some(
-            Link("https://bintray.com/akka/snapshots/alpakka-kafka/1.0-M1%2B44-9f512541",
-                 Some("Snapshots are published after every commit on master"),
-                 newTab = false)),
+            Link(
+              "https://bintray.com/akka/snapshots/alpakka-kafka/1.0-M1%2B44-9f512541",
+              Some("Snapshots are published after every commit on master"),
+              newTab = false
+            )
+          ),
           levels = List(
             Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
           )
-        ))
+        )
+      )
     }
 
   }
