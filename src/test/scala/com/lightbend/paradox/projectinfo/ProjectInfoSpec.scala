@@ -49,14 +49,6 @@ class ProjectInfoSpec extends WordSpec with Matchers {
           |  scala-versions: ["2.12", "2.13"]
           |  jdk-versions: ["OpenJDK 8"]
           |  jpms-name: "alpakka.core"
-          |  levels: [
-          |    {
-          |      readiness: Incubating
-          |      since: "2018-11-22"
-          |      since-version: "12.2"
-          |      note: "Community rocks this module"
-          |    }
-          |  ]
           |}
         """.stripMargin
       val c = ConfigFactory.parseString(in).getConfig("core")
@@ -72,13 +64,9 @@ class ProjectInfoSpec extends WordSpec with Matchers {
           forums       = immutable.Seq.empty,
           releaseNotes = None,
           snapshots    = None,
-          levels = List(
-            Level(ReadinessLevel.Incubating,
-                  LocalDate.of(2018, 11, 22),
-                  "12.2",
-                  None,
-                  Some("Community rocks this module"))),
-        ))
+          levels       = List()
+        )
+      )
     }
   }
 

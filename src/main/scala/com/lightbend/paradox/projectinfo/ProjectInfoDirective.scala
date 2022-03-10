@@ -105,22 +105,24 @@ object ProjectInfoDirective {
       }
       p.print("</td></tr>").println()
     }
-    p.print("<tr><th>Readiness level</th><td>")
-    val currentLevel = levels.head
-    p.print("""<div class="readiness-level">""").print(currentLevel.level.name).print("</div>").println()
-    p.print("<div>Since ")
-      .print(currentLevel.sinceVersion)
-      .print(", ")
-      .print(currentLevel.since.format(formatter))
-      .print("</div>")
-      .println()
-    currentLevel.ends.foreach { endDate =>
-      p.print("<div>Ends: ").print(endDate.format(formatter)).print("</div>").println()
+    levels.headOption.foreach { currentLevel =>
+      p.print("<tr><th>Readiness level</th><td>")
+      p.print("""<div class="readiness-level">""").print(currentLevel.level.name).print("</div>").println()
+      p.print("<div>Since ")
+        .print(currentLevel.sinceVersion)
+        .print(", ")
+        .print(currentLevel.since.format(formatter))
+        .print("</div>")
+        .println()
+      currentLevel.ends.foreach { endDate =>
+        p.print("<div>Ends: ").print(endDate.format(formatter)).print("</div>").println()
+      }
+      currentLevel.note.foreach { text =>
+        p.print("<div>Note: ").printEncoded(text).print("</div>").println()
+      }
+      p.print("</td></tr>")
     }
-    currentLevel.note.foreach { text =>
-      p.print("<div>Note: ").printEncoded(text).print("</div>").println()
-    }
-    p.print("</td></tr>")
+
     sbtValues.homepage.foreach { page =>
       p.println().print("<tr><th>Home page</th><td>")
       printLink(p, page.toExternalForm, page.toExternalForm, false)
