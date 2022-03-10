@@ -125,10 +125,14 @@ object ProjectInfo {
     val forums       = c.getParsedList("forums", c => Link(c))
     val releaseNotes = c.getOption("release-notes", (c, s) => Link(c.getConfig(s)))
     val snapshots    = c.getOption("snapshots", (c, s) => Link(c.getConfig(s)))
-    val levels =
-      for { item <- c.getObjectList("levels").asScala.toList } yield {
-        Level(item.toConfig)
-      }
+    val levels = c
+      .getOption("levels", (config, string) => {
+        for { item <- config.getObjectList(string).asScala.toList } yield {
+          Level(item.toConfig)
+        }
+      })
+      .getOrElse(List.empty)
+
     new ProjectInfo(name,
                     title,
                     scalaVersions,
