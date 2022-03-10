@@ -38,8 +38,8 @@ organizationName := "Lightbend Inc."
 startYear        := Some(2018)
 
 // no API docs
-sources in (Compile, doc)                := Seq.empty
-publishArtifact in (Compile, packageDoc) := false
+Compile / doc / sources                := Seq.empty
+Compile / packageDoc / publishArtifact := false
 
 bintrayOrganization := Some("sbt")
 bintrayRepository   := "sbt-plugin-releases"
