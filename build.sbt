@@ -42,7 +42,6 @@ Compile / doc / sources                := Seq.empty
 Compile / packageDoc / publishArtifact := false
 
 enablePlugins(AutomateHeaderPlugin)
-scalafmtOnCompile := true
 
 // Disable publish for now
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
