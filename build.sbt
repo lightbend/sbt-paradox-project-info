@@ -16,8 +16,8 @@ name             := "sbt-paradox-project-info"
 addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.4.3")
 
 libraryDependencies ++= Seq(
-  "com.typesafe"   % "config"    % "1.3.3",
-  "org.scalatest" %% "scalatest" % "3.0.8" % Test // ApacheV2
+  "com.typesafe"   % "config"    % "1.4.2",
+  "org.scalatest" %% "scalatest" % "3.2.9" % Test // ApacheV2
 )
 
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
