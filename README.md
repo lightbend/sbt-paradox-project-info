@@ -1,4 +1,4 @@
-# sbt-paradox-project-info [![bintray-badge][]][bintray] [![travis-badge][]][travis]
+# sbt-paradox-project-info [![bintray-badge][]][bintray][![github-actions-badge][]][github-actions]
 
 A [paradox](https://github.com/lightbend/paradox/) directive that includes standardised project information in the generated documentation.
 
@@ -95,6 +95,5 @@ Feel free to ping contributors for code review or discussions. Pull requests are
 
 [bintray]:               https://bintray.com/sbt/sbt-plugin-releases/sbt-paradox-project-info
 [bintray-badge]:         https://api.bintray.com/packages/sbt/sbt-plugin-releases/sbt-paradox-project-info/images/download.svg
-[travis]:                https://travis-ci.com/lightbend/sbt-paradox-project-info
-[travis-badge]:          https://travis-ci.com/lightbend/sbt-paradox-project-info.svg?branch=master
-
+[github-actions]:        https://github.com/lightbend/sbt-paradox-project-info/actions/workflows/ci.yml?query=branch%3Amaster
+[github-actions-badge]:  https://github.com/lightbend/sbt-paradox-project-info/actions/workflows/ci.yml/badge.svg?branch=master

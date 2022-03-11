@@ -1,4 +1,4 @@
-scalaVersion := "2.12.10"
+ThisBuild / scalaVersion := "2.12.15"
 
 sbtPlugin := true
 
@@ -46,3 +46,14 @@ bintrayRepository   := "sbt-plugin-releases"
 
 enablePlugins(AutomateHeaderPlugin)
 scalafmtOnCompile := true
+
+// Disable publish for now
+ThisBuild / githubWorkflowPublishTargetBranches := Seq()
+
+ThisBuild / githubWorkflowJavaVersions := List(
+  JavaSpec.temurin("8"),
+  JavaSpec.temurin("11"),
+  JavaSpec.temurin("17")
+)
+
+ThisBuild / githubWorkflowTargetBranches := Seq("master")
