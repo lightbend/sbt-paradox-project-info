@@ -41,9 +41,6 @@ startYear        := Some(2018)
 Compile / doc / sources                := Seq.empty
 Compile / packageDoc / publishArtifact := false
 
-bintrayOrganization := Some("sbt")
-bintrayRepository   := "sbt-plugin-releases"
-
 enablePlugins(AutomateHeaderPlugin)
 scalafmtOnCompile := true
 
