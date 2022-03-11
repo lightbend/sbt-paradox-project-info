@@ -16,11 +16,10 @@
 
 package com.lightbend.paradox.projectinfo
 
-import org.scalatest.FlatSpec
+import ReadinessLevel.*
+import org.scalatest.flatspec.AnyFlatSpec
 
-import ReadinessLevel._
-
-class ReadinessLevelSpec extends FlatSpec {
+class ReadinessLevelSpec extends AnyFlatSpec {
 
   "String values" should "read correctly" in {
     val values = Map(

@@ -17,14 +17,13 @@
 package com.lightbend.paradox.projectinfo
 
 import java.time.LocalDate
-
 import com.typesafe.config.ConfigFactory
-import org.scalatest.WordSpec
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 import scala.collection.immutable
 
-class ProjectInfoSpec extends WordSpec with Matchers {
+class ProjectInfoSpec extends AnyWordSpec with Matchers {
 
   "Level" should {
     "read from config" in {
