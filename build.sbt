@@ -63,7 +63,7 @@ ThisBuild / publishTo              := sonatypePublishTo.value
 ThisBuild / test / publishArtifact := false
 ThisBuild / pomIncludeRepository   := (_ => false)
 ThisBuild / Compile / doc / sources := Seq() // See https://github.com/xerial/sbt-sonatype/issues/30#issuecomment-342532067
-ThisBuild / sonatypeProfileName := "com.lightbend"
+sonatypeProfileName := "com.lightbend"
 
 ThisBuild / githubWorkflowJavaVersions := List(
   JavaSpec.temurin("8"),
