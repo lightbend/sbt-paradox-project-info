@@ -58,7 +58,7 @@ ThisBuild / githubWorkflowPublish := Seq(
   )
 )
 
-sonatypeProfileName := "com.lightbend.paradox"
+sonatypeProfileName := "com.lightbend"
 publishMavenStyle   := true
 
 ThisBuild / githubWorkflowJavaVersions := List(
