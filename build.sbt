@@ -58,8 +58,9 @@ ThisBuild / githubWorkflowPublish := Seq(
   )
 )
 
-sonatypeProfileName := "com.lightbend"
-publishMavenStyle   := true
+sonatypeProfileName     := "com.lightbend"
+publishMavenStyle       := true
+Compile / doc / sources := Seq() // See https://github.com/xerial/sbt-sonatype/issues/30#issuecomment-342532067
 
 ThisBuild / githubWorkflowJavaVersions := List(
   JavaSpec.temurin("8"),
