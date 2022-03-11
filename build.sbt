@@ -58,6 +58,9 @@ ThisBuild / githubWorkflowPublish := Seq(
   )
 )
 
+sonatypeProfileName := "com.lightbend"
+publishMavenStyle   := true
+
 ThisBuild / githubWorkflowJavaVersions := List(
   JavaSpec.temurin("8"),
   JavaSpec.temurin("11"),
