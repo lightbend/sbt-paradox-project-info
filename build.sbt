@@ -37,10 +37,6 @@ developers += Developer(
 organizationName := "Lightbend Inc."
 startYear        := Some(2018)
 
-// no API docs
-Compile / doc / sources                := Seq.empty
-Compile / packageDoc / publishArtifact := false
-
 enablePlugins(AutomateHeaderPlugin)
 
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
@@ -62,8 +58,7 @@ ThisBuild / publishMavenStyle      := true
 ThisBuild / publishTo              := sonatypePublishTo.value
 ThisBuild / test / publishArtifact := false
 ThisBuild / pomIncludeRepository   := (_ => false)
-ThisBuild / Compile / doc / sources := Seq() // See https://github.com/xerial/sbt-sonatype/issues/30#issuecomment-342532067
-sonatypeProfileName := "com.lightbend"
+sonatypeProfileName                := "com.lightbend"
 
 ThisBuild / githubWorkflowJavaVersions := List(
   JavaSpec.temurin("8"),
