@@ -1,4 +1,4 @@
-# sbt-paradox-project-info [![bintray-badge][]][bintray][![github-actions-badge][]][github-actions]
+# sbt-paradox-project-info [![maven-central-badge][]][maven-central][![github-actions-badge][]][github-actions]
 
 A [paradox](https://github.com/lightbend/paradox/) directive that includes standardised project information in the generated documentation.
 
@@ -93,7 +93,7 @@ The license is Apache 2.0, see LICENSE.
 
 Feel free to ping contributors for code review or discussions. Pull requests are very welcome–thanks in advance!
 
-[bintray]:               https://bintray.com/sbt/sbt-plugin-releases/sbt-paradox-project-info
-[bintray-badge]:         https://api.bintray.com/packages/sbt/sbt-plugin-releases/sbt-paradox-project-info/images/download.svg
+[maven-central]:         https://maven-badges.herokuapp.com/maven-central/com.lightbend.paradox/sbt-paradox-project-info
+[maven-central-badge]:   https://maven-badges.herokuapp.com/maven-central/com.lightbend.paradox/sbt-paradox-project-info/badge.svg
 [github-actions]:        https://github.com/lightbend/sbt-paradox-project-info/actions/workflows/ci.yml?query=branch%3Amaster
 [github-actions-badge]:  https://github.com/lightbend/sbt-paradox-project-info/actions/workflows/ci.yml/badge.svg?branch=master
