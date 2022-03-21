@@ -35,7 +35,8 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
   override def projectSettings: Seq[Setting[_]] = projectInfoSettings(Compile)
 
   override def globalSettings: Seq[Setting[_]] = Seq(
-    projectInfoVersion := version.value
+    projectInfoVersion := version.value,
+    readinessLevels    := Map.empty
   )
 
   def projectInfoSettings(config: Configuration): Seq[Setting[_]] =
@@ -44,9 +45,10 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
         Def.task {
           val s = state.value
           Seq { _: Writer.Context ⇒
-            val f           = new File((LocalRootProject / baseDirectory).value, "project/project-info.conf")
-            val extracted   = Project.extract(s)
-            val rootVersion = extracted.get(projectInfoVersion)
+            val f                  = new File((LocalRootProject / baseDirectory).value, "project/project-info.conf")
+            val extracted          = Project.extract(s)
+            val rootVersion        = projectInfoVersion.value
+            val readinessLevelsMap = readinessLevels.value
             val config = if (f.exists()) {
               ConfigFactory
                 .parseFile(f)
@@ -63,7 +65,7 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
               val projectName =
                 try extracted.get(project / name)
                 catch {
-                  case e: Exception =>
+                  case _: Exception =>
                     throw new RuntimeException(
                       s"couldn't read sbt setting `$projectId / name`, does the projectId exist?"
                     )
@@ -78,7 +80,7 @@ object ParadoxProjectInfoPlugin extends AutoPlugin {
                 extracted.get(project / crossScalaVersions).toList
               )
             }
-            new ProjectInfoDirective(config, sbtDetails)
+            new ProjectInfoDirective(config, sbtDetails, readinessLevelsMap)
           }
         }
       }.value

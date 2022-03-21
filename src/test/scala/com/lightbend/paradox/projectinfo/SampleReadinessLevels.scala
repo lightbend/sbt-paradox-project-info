@@ -16,21 +16,24 @@
 
 package com.lightbend.paradox.projectinfo
 
-import ReadinessLevel.*
-import org.scalatest.flatspec.AnyFlatSpec
-
-class ReadinessLevelSpec extends AnyFlatSpec {
-
-  "String values" should "read correctly" in {
-    val values = Map(
-      "EndOfLife" -> EndOfLife,
-      "Supported" -> Supported,
-      "CommunityDriven" -> CommunityDriven,
-      "Incubating" -> Incubating
-    )
-    for {
-      (s, expected) <- values
-    } assert(ReadinessLevel.fromString(s) === expected)
+object SampleReadinessLevels {
+  case object EndOfLife extends ReadinessLevel {
+    val name = "End of life"
+  }
+  case object Supported extends ReadinessLevel {
+    val name = "Supported"
+  }
+  case object CommunityDriven extends ReadinessLevel {
+    val name = "Community Driven"
+  }
+  case object Incubating extends ReadinessLevel {
+    val name = "Incubating"
   }
 
+  val values = Map(
+    "EndOfLife" -> EndOfLife,
+    "Supported" -> Supported,
+    "CommunityDriven" -> CommunityDriven,
+    "Incubating" -> Incubating
+  )
 }

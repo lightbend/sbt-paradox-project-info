@@ -36,7 +36,9 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
           |}
         """.stripMargin
       val c = ConfigFactory.parseString(in).getConfig("level")
-      Level(c) should be(Level(ReadinessLevel.Incubating, LocalDate.of(2018, 11, 22), "0.12", None, None))
+      Level(c, SampleReadinessLevels.values) should be(
+        Level(SampleReadinessLevels.Incubating, LocalDate.of(2018, 11, 22), "0.12", None, None)
+      )
     }
   }
 
@@ -51,7 +53,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
           |}
         """.stripMargin
       val c = ConfigFactory.parseString(in).getConfig("core")
-      ProjectInfo("core", c) should be(
+      ProjectInfo("core", SampleReadinessLevels.values, c) should be(
         ProjectInfo(
           "core",
           "core",
@@ -93,7 +95,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
       val c    = ConfigFactory.parseString(in).getConfig("project-info")
       val name = "core"
       val conf = c.getConfig(name)
-      ProjectInfo(name, conf) should be(
+      ProjectInfo(name, SampleReadinessLevels.values, conf) should be(
         ProjectInfo(
           "core",
           title = "The core project",
@@ -107,7 +109,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
           snapshots = None,
           levels = List(
             Level(
-              ReadinessLevel.Incubating,
+              SampleReadinessLevels.Incubating,
               LocalDate.of(2018, 11, 22),
               "0.18",
               None,
@@ -150,7 +152,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
       val c    = ConfigFactory.parseString(in).resolve().getConfig("project-info")
       val name = "core"
       val conf = c.getConfig(name)
-      ProjectInfo(name, conf) should be(
+      ProjectInfo(name, SampleReadinessLevels.values, conf) should be(
         ProjectInfo(
           "core",
           title = "The core project",
@@ -163,9 +165,9 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
           releaseNotes = None,
           snapshots = None,
           levels = List(
-            Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None),
+            Level(SampleReadinessLevels.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None),
             Level(
-              ReadinessLevel.Incubating,
+              SampleReadinessLevels.Incubating,
               LocalDate.of(2018, 11, 22),
               "0.18",
               None,
@@ -212,7 +214,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
       val c    = ConfigFactory.parseString(in).resolve().getConfig("project-info")
       val name = "core"
       val conf = c.getConfig(name)
-      ProjectInfo(name, conf) should be(
+      ProjectInfo(name, SampleReadinessLevels.values, conf) should be(
         ProjectInfo(
           "core",
           title = "The core project",
@@ -234,7 +236,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
           releaseNotes = None,
           snapshots = None,
           levels = List(
-            Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
+            Level(SampleReadinessLevels.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
           )
         )
       )
@@ -276,7 +278,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
       val c    = ConfigFactory.parseString(in).resolve().getConfig("project-info")
       val name = "core"
       val conf = c.getConfig(name)
-      ProjectInfo(name, conf) should be(
+      ProjectInfo(name, SampleReadinessLevels.values, conf) should be(
         ProjectInfo(
           "core",
           title = "The core project",
@@ -292,7 +294,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
           releaseNotes = None,
           snapshots = None,
           levels = List(
-            Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
+            Level(SampleReadinessLevels.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
           )
         )
       )
@@ -324,7 +326,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
       val c    = ConfigFactory.parseString(in).resolve().getConfig("project-info")
       val name = "core"
       val conf = c.getConfig(name)
-      ProjectInfo(name, conf) should be(
+      ProjectInfo(name, SampleReadinessLevels.values, conf) should be(
         ProjectInfo(
           "core",
           title = "The core project",
@@ -343,7 +345,7 @@ class ProjectInfoSpec extends AnyWordSpec with Matchers {
             )
           ),
           levels = List(
-            Level(ReadinessLevel.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
+            Level(SampleReadinessLevels.Supported, LocalDate.of(2018, 12, 12), "0.21", None, None)
           )
         )
       )

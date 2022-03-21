@@ -35,41 +35,8 @@ case class SbtValues(
     crossScalaVersions: immutable.Seq[String]
 )
 
-trait ReadinessLevel { def name: String }
-object ReadinessLevel {
-  private def glossary(anchor: String, label: String): String =
-    s"""<a href="https://developer.lightbend.com/docs/introduction/getting-help/support-terminology.html#$anchor" target="_blank" rel="noopener">$label</a>""".stripMargin
-
-  case object Supported extends ReadinessLevel {
-    val name =
-      s"""${glossary(
-          "supported",
-          "Supported"
-        )}, <a href="https://www.lightbend.com/lightbend-subscription" target="_blank" rel="noopener">Lightbend Subscription</a> provides support"""
-  }
-  case object Certified extends ReadinessLevel {
-    val name =
-      s"""${glossary("certified", "Certified")} by <a href="https://www.lightbend.com/" target="_blank">Lightbend</a>"""
-  }
-  case object Incubating extends ReadinessLevel {
-    val name = glossary("incubating", "Incubating")
-  }
-  case object CommunityDriven extends ReadinessLevel {
-    val name = glossary("community-driven", "Community-driven")
-  }
-  case object EndOfLife extends ReadinessLevel {
-    val name =
-      s"${glossary("eol", "End-of-Life")}, it is not recommended to use this project any more."
-  }
-
-  def fromString(s: String): ReadinessLevel = s match {
-    case "Supported" => Supported
-    case "Certified" => Certified
-    case "Incubating" => Incubating
-    case "CommunityDriven" => CommunityDriven
-    case "EndOfLife" => EndOfLife
-    case other => throw new IllegalArgumentException(s"unknown readiness level: $other")
-  }
+trait ReadinessLevel {
+  def name: String
 }
 
 case class Link(url: String, text: Option[String], newTab: Boolean = true)
@@ -94,9 +61,9 @@ case class Level(
 
 object Level {
 
-  def apply(c: Config): Level = {
+  def apply(c: Config, readinessLevelsMap: Map[String, ReadinessLevel]): Level = {
     import Util.ExtendedConfig
-    val ml           = c.getReadinessLevel("readiness")
+    val ml           = c.getReadinessLevel("readiness", readinessLevelsMap)
     val since        = c.getLocalDate("since")
     val sinceVersion = c.getString("since-version")
     val ends         = c.getOption("ends", _.getLocalDate(_))
@@ -122,7 +89,7 @@ case class ProjectInfo(
 object ProjectInfo {
   import Util.ExtendedConfig
 
-  def apply(name: String, c: Config): ProjectInfo = {
+  def apply(name: String, readinessLevelsMap: Map[String, ReadinessLevel], c: Config): ProjectInfo = {
     val title = c.getOption("title", _.getString(_)).getOrElse(name)
     val scalaVersions =
       if (c.hasPath("scala-versions")) c.getStringList("scala-versions").asScala.toList
@@ -137,7 +104,8 @@ object ProjectInfo {
     val levels = c
       .getOption(
         "levels",
-        (config, string) => for { item <- config.getObjectList(string).asScala.toList } yield Level(item.toConfig)
+        (config, string) =>
+          for { item <- config.getObjectList(string).asScala.toList } yield Level(item.toConfig, readinessLevelsMap)
       )
       .getOrElse(List.empty)
 
@@ -163,8 +131,12 @@ object Util {
   private val dateFormat = DateTimeFormatter.ISO_LOCAL_DATE
 
   implicit class ExtendedConfig(c: Config) {
-    def getReadinessLevel(path: String): ReadinessLevel = ReadinessLevel.fromString(c.getString(path))
-    def getLocalDate(path: String): LocalDate           = LocalDate.parse(c.getString(path), dateFormat)
+    def getReadinessLevel(path: String, readinessLevelsMap: Map[String, ReadinessLevel]): ReadinessLevel = {
+      val value = c.getString(path)
+      readinessLevelsMap.getOrElse(value, throw new Exception(s"No configured readinessLevels with value:$value"))
+    }
+
+    def getLocalDate(path: String): LocalDate = LocalDate.parse(c.getString(path), dateFormat)
     def getOption[T](path: String, read: (Config, String) => T): Option[T] =
       if (c.hasPath(path)) Some(read(c, path)) else None
     def getOptionalBoolean(path: String, defaultValue: Boolean): Boolean =
