@@ -23,13 +23,16 @@ import com.typesafe.config.Config
 import org.pegdown.Printer
 import org.pegdown.ast.{DirectiveNode, Visitor}
 
-class ProjectInfoDirective(config: Config, moduleToSbtValues: String => SbtValues)
-    extends LeafBlockDirective("project-info") {
+class ProjectInfoDirective(
+    config: Config,
+    moduleToSbtValues: String => SbtValues,
+    readinessLevelsMap: Map[String, ReadinessLevel]
+) extends LeafBlockDirective("project-info") {
   def render(node: DirectiveNode, visitor: Visitor, printer: Printer): Unit = {
     val projectId = node.attributes.value("projectId")
     if (config.hasPath(projectId)) {
       val module = config.getConfig(projectId)
-      val data   = SbtAndProjectInfo(moduleToSbtValues(projectId), ProjectInfo(projectId, module))
+      val data   = SbtAndProjectInfo(moduleToSbtValues(projectId), ProjectInfo(projectId, readinessLevelsMap, module))
       ProjectInfoDirective.renderInfo(printer, data)
     } else throw new RuntimeException(s"project-info.conf does not contain `$projectId`")
   }

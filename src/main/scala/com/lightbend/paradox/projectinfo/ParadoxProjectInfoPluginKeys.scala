@@ -20,6 +20,8 @@ import sbt._
 
 trait ParadoxProjectInfoPluginKeys {
   val projectInfoVersion = settingKey[String]("The version/revision propagated into `project-info.version`.")
+  val readinessLevels =
+    settingKey[Map[String, ReadinessLevel]]("The referenced readiness-levels when using levels")
 }
 
 object ParadoxProjectInfoPluginKeys extends ParadoxProjectInfoPluginKeys
