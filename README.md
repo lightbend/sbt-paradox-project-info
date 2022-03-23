@@ -89,6 +89,10 @@ readinessLevels ++= Map(
 )
 ```
 
+It's also possible to abstract away the `readinessLevels` setting into a sbt plugin which is convenient if you are using
+the same configured levels in multiple projects (typical for an organization/company). For an example of this have a
+look [here](https://github.com/lightbend/sbt-paradox-lightbend-project-info).
+
 Then in your `project/project-info.conf` you can specify these readiness levels using the `levels` config path, i.e.
 
 ```hocon
