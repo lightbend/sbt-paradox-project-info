@@ -54,8 +54,6 @@ ThisBuild / githubWorkflowPublish := Seq(
   )
 )
 
-ThisBuild / publishMavenStyle      := true
-ThisBuild / publishTo              := sonatypePublishTo.value
 ThisBuild / test / publishArtifact := false
 ThisBuild / pomIncludeRepository   := (_ => false)
 sonatypeProfileName                := "com.lightbend"
