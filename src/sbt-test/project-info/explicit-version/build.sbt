@@ -4,7 +4,7 @@ enablePlugins(ParadoxPlugin)
 paradoxTheme := None
 
 ThisBuild / version := "0.1.2.3"
-projectInfoVersion   := "snapshot"
+projectInfoVersion  := "snapshot"
 
 val commonSettings = Seq(
   organization := "com.lightbend",
