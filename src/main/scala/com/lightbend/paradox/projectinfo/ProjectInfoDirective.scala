@@ -95,9 +95,9 @@ object ProjectInfoDirective {
         .print("</td></tr>")
         .println()
     }
-    jpmsName.foreach(n => p.print("<tr><th>JPMS module name</th><td>").print(n).print("</td></tr>").println())
+    jpmsName.foreach(n => p.print("<tr><th>JPMS module name</th><td>").print(n).print("</td></tr>"))
     if (sbtValues.licenses.nonEmpty) {
-      p.print("<tr><th>License</th><td>")
+      p.println().print("<tr><th>License</th><td>")
       for {
         lic <- sbtValues.licenses
       } {
@@ -105,8 +105,9 @@ object ProjectInfoDirective {
         printLink(p, lic._2.toString, lic._1, newTab = true)
         p.print("</div>").println()
       }
-      p.print("</td></tr>").println()
+      p.print("</td></tr>")
     }
+    levels.headOption.map(_ => p.println())
     levels.headOption.foreach { currentLevel =>
       p.print("<tr><th>Readiness level</th><td>")
       p.print("""<div class="readiness-level">""").print(currentLevel.level.name).print("</div>").println()
