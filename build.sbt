@@ -1,4 +1,4 @@
-ThisBuild / scalaVersion := "2.12.15"
+ThisBuild / scalaVersion := "2.12.17"
 
 sbtPlugin := true
 
@@ -9,11 +9,11 @@ scriptedLaunchOpts ++= java.lang.management.ManagementFactory.getRuntimeMXBean.g
   Seq("-Xmx", "-Xms", "-XX", "-Dfile").exists(a.startsWith)
 )
 
-crossSbtVersions := List("1.1.0")
+crossSbtVersions := List("1.4.9")
 organization     := "com.lightbend.paradox"
 name             := "sbt-paradox-project-info"
 
-addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.4.3")
+addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.10.3")
 
 libraryDependencies ++= Seq(
   "com.typesafe"   % "config"    % "1.4.2",
@@ -59,8 +59,8 @@ ThisBuild / pomIncludeRepository   := (_ => false)
 sonatypeProfileName                := "com.lightbend"
 
 ThisBuild / githubWorkflowJavaVersions := List(
-  JavaSpec.temurin("8"),
-  JavaSpec.temurin("11")
+  JavaSpec.temurin("11"),
+  JavaSpec.temurin("17")
 )
 
 ThisBuild / githubWorkflowTargetBranches := Seq("main")

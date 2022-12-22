@@ -3,8 +3,8 @@ import sbt.Keys.{homepage, scmInfo}
 enablePlugins(ParadoxPlugin)
 paradoxTheme := None
 
-version in ThisBuild := "0.1.2.3"
-projectInfoVersion   := "snapshot"
+ThisBuild / version := "0.1.2.3"
+projectInfoVersion  := "snapshot"
 
 val commonSettings = Seq(
   organization := "com.lightbend",
@@ -21,5 +21,5 @@ val commonSettings = Seq(
 lazy val core = Project(id = "coreId", base = file("core"))
   .settings(commonSettings)
   .settings(
-    crossScalaVersions := Seq("2.12.7", "2.11.12")
+    crossScalaVersions := Seq("2.12.17")
   )

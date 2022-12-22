@@ -18,7 +18,7 @@ lazy val core = Project(id = "coreId", base = file("core"))
   .settings(commonSettings)
   .settings(
     version            := "0.1.2.3",
-    crossScalaVersions := Seq("2.12.7", "2.11.12")
+    crossScalaVersions := Seq("2.12.17")
   )
 
 lazy val testkit = project
