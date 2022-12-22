@@ -64,4 +64,5 @@ ThisBuild / githubWorkflowJavaVersions := List(
   JavaSpec.temurin("17")
 )
 
-ThisBuild / githubWorkflowTargetBranches := Seq("master")
+ThisBuild / githubWorkflowTargetBranches := Seq("main")
+ThisBuild / githubWorkflowBuild          := Seq(WorkflowStep.Sbt(List("test", "scripted")))
