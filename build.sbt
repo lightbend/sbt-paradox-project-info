@@ -13,7 +13,7 @@ crossSbtVersions := List("1.4.9")
 organization     := "com.lightbend.paradox"
 name             := "sbt-paradox-project-info"
 
-addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.10.3")
+addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.10.6")
 
 libraryDependencies ++= Seq(
   "com.typesafe"   % "config"    % "1.4.2",
