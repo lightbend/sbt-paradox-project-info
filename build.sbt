@@ -54,7 +54,7 @@ ThisBuild / githubWorkflowPublish := Seq(
   )
 )
 
-sonatypeProfileName                := "com.lightbend"
+sonatypeProfileName := "com.lightbend"
 
 ThisBuild / githubWorkflowJavaVersions := List(
   JavaSpec.temurin("11"),
